@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { UserContext } from "../context/Context";
+import { useSelector } from "react-redux";
 import Navbar from "./Navbar";
 
 const Home = () => {
-  const { user } = useContext(UserContext);
+  const  user  = useSelector((state)=>state.user.user)
   
   return (
     

@@ -4,14 +4,13 @@ import { useNavigate } from "react-router-dom";
 
 const Deskstop = () => {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
   const [users, setUsers] = useState([]);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/user/display`);
+        const response = await axios.get(`${BACKEND_URL}/admin/display`);
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -19,43 +18,55 @@ const Deskstop = () => {
     };
 
     fetchUsers();
-  }, []); 
-  
+  }, []);
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">User Dashboard</h2>
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">User Dashboard</h2>
 
-      <table className="w-full border border-gray-300">
-        <thead className="bg-gray-200">
-          <tr>
-            <th className="border px-3 py-2">ID</th>
-            <th className="border px-3 py-2">Name</th>
-            <th className="border px-3 py-2">Email</th>
-            <th className="border px-3 py-2">Role</th>
-            <th className="border px-3 py-2">Password</th>
-            <th className="border px-3 py-2">Created At</th>
-             <th className="border px-3 py-2">Edit Profile</th>
-          </tr>
-
-        </thead>
-
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id} className="text-center">
-              <td className="border px-3 py-2">{user.id}</td>
-              <td className="border px-3 py-2">{user.name}</td>
-              <td className="border px-3 py-2">{user.email}</td>
-              <td className="border px-3 py-2">{user.Role}</td>
-              <td className="border px-3 py-2">{user.Password}</td>
-              <td className="border px-3 py-2">
-                {new Date(user.created_at).toLocaleString()}
-              </td>
-               <td className="border px-3 py-2"><button onClick={()=>navigate(`/edit/${user.id}`)}>Edit</button></td>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+          <thead className="bg-gray-50">
+            <tr>
+              {["ID", "Name", "Email", "Role", "Contact", "Created At", "Edit"].map(
+                (header) => (
+                  <th
+                    key={header}
+                    className="text-left px-6 py-3 text-gray-700 font-medium uppercase tracking-wider"
+                  >
+                    {header}
+                  </th>
+                )
+              )}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {users.map((user) => (
+              <tr
+                key={user.id}
+                className="hover:bg-gray-100 transition duration-200 cursor-pointer"
+              >
+                <td className="px-6 py-4">{user.id}</td>
+                <td className="px-6 py-4">{user.name}</td>
+                <td className="px-6 py-4">{user.email}</td>
+                <td className="px-6 py-4">{user.Role}</td>
+                <td className="px-6 py-4 break-all">{user.contact}</td>
+                <td className="px-6 py-4">
+                  {new Date(user.created_at).toLocaleString()}
+                </td>
+                <td className="px-6 py-4">
+                  <button
+                    onClick={() => navigate(`/edit/${user.id}`)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  >
+                    Edit
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

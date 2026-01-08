@@ -14,12 +14,13 @@ const Edit = () => {
 
  useEffect(() => {
   axios
-    .get(`http://localhost:5000/user/${id}`)
+    .get(`http://localhost:5000/admin/${id}`)
     .then((res) => {
-      setRole(res.data.Role || "");
-      setName(res.data.name || "");
-      setEmail(res.data.email || "");
-      setContact(res.data.contact || "");
+      setRole(res.data.Role );
+      setName(res.data.name );
+      setEmail(res.data.email );
+      setContact(res.data.contact );
+      setPassword(res.data.Password );
     })
     .catch(() => {
       alert("User not found");
@@ -31,7 +32,7 @@ const Edit = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    await axios.put(`http://localhost:5000/user/edit/${id}`, {
+    await axios.put(`http://localhost:5000/admin/edit/${id}`, {
       role,
       name,
       contact,

@@ -1,43 +1,40 @@
-import { useContext, useState } from "react";
-import { UserContext } from "../context/Context";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
+import { setUser } from "../redux/userSlice";
 
 const Login = () => {
-  const { setUser } = useContext(UserContext);
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [redirect, setRedirect] = useState(false); 
+  const [redirect, setRedirect] = useState(false);
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-const handleLogin = async (e) => {
-  e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await axios.post(
-      `${BACKEND_URL}/user/login`,
-      {
-        email: email,   
-        password: password
-      }
-    );
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/user/login`,
+        { email, password }
+      );
 
-    const user = response.data;
-    console.log(user);
+      const user = response.data;
+      console.log(user);
 
-    
-   localStorage.setItem("user", JSON.stringify(user));
-   setUser(user);
-   console.log(user)
+     
+      dispatch(setUser(user));
 
-    setRedirect(true); 
+      setRedirect(true);
+    } catch (err) {
+      alert(err.response?.data?.message || "Login failed");
+    }
+  };
 
-  } catch (err) {
-    alert(err.response?.data?.message || "Login failed");
-  }
-};
- if (redirect) {
+  if (redirect) {
     return <Navigate to="/home" replace />;
   }
 
@@ -69,7 +66,7 @@ const handleLogin = async (e) => {
 
         <button
           type="submit"
-          className="w-full bg-green-500 text-white py-2 rounded"
+          className="w-full bg-blue-500 text-white py-2 rounded"
         >
           Login
         </button>

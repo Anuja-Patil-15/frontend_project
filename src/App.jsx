@@ -1,16 +1,15 @@
-import React, { useContext } from "react";
-import { UserContext } from "./context/Context";
+import React from "react";
+import { useSelector } from "react-redux";
 import Navbar from "./pages/Navbar";
 import Routess from "./Routes/Routes";
 
-
 const App = () => {
-  const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.user.user); // get user from Redux
 
   return (
     <>
-     <header>
-        <Navbar/>
+      <header>
+        <Navbar />
       </header>
 
       <Routess />

@@ -41,17 +41,17 @@ const AddUser = () => {
     try {
       const password = generatePassword(); 
 
-      await axios.post(`${BACKEND_URL}/user/add`, {
+      await axios.post(`${BACKEND_URL}/admin/add`, {
         role,
         name,
         contact,
         email,
         password,
       });
-
+      
       
       setPass(password);
-      alert("User registered successfully");
+      alert("User added successfully");
 
       
       setRole("");
@@ -62,9 +62,9 @@ const AddUser = () => {
       setPass(""); 
 
       if (error.response && error.response.status === 409) {
-        alert("Email already exists for this role");
+        alert(error.response.data.message);
       } else {
-        alert("Failed to register user");
+        alert("Failed to add user");
       }
 
       console.error(error);
@@ -77,7 +77,7 @@ const AddUser = () => {
         onSubmit={handleRegister}
         className="bg-white p-8 rounded-lg shadow-md w-96"
       >
-        <h2 className="font-bold text-2xl text-center mb-6">Register</h2>
+        <h2 className="font-bold text-2xl text-center mb-6">Add User</h2>
 
         
         <select
@@ -131,7 +131,7 @@ const AddUser = () => {
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded mt-6 hover:bg-blue-600"
         >
-          Register
+          Add User
         </button>
 
         
