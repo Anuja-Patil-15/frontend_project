@@ -11,7 +11,7 @@ const Navbar = () => {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
-
+ //if click logout then navigate to /
   const handleLogout = () => {
     dispatch(logoutUser()); 
     navigate("/");
@@ -26,16 +26,17 @@ const Navbar = () => {
     return () => clearTimeout(timer);
   }, [userDropdown]);
 
-  
+  //does not display details in navbar
   useEffect(() => {
     if (location.pathname === "/") dispatch(logoutUser());
   }, [location.pathname, dispatch]);
 
   return (
-    <nav className="bg-gray-400 text-white px-6 py-4 shadow-md fixed w-full z-50">
+    <nav className="bg-gray-400 text-white px-6 py-4 shadow-md fixed w-full z-50 h-[10%]">
       <div className="flex justify-between items-center max-w-7xl mx-auto">
        
         <div className="hidden md:flex items-center gap-6">
+          {/*if login as admin*/}
           {user?.role === "admin" && (
             <>
               <Link
@@ -54,7 +55,7 @@ const Navbar = () => {
           )}
         </div>
 
-      
+      {/*when click username then become dropdown of logout*/}
         <div className="relative hidden md:block">
           <span
             onClick={() => setUserDropdown(!userDropdown)}
@@ -62,7 +63,7 @@ const Navbar = () => {
           >
             {user?.email}
           </span>
-
+           {/*after droupdown*/}
           {userDropdown && (
             <div className="absolute right-0 mt-2 bg-white text-black rounded shadow w-40">
               <button
@@ -75,7 +76,7 @@ const Navbar = () => {
           )}
         </div>
 
-        
+        {/*for responsive display menu*/}
         <div className="md:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -86,7 +87,7 @@ const Navbar = () => {
         </div>
       </div>
 
-     
+     {/*show what display inside menu*/}
       {menuOpen && (
         <div className="md:hidden mt-2 px-4 pb-4 text-white flex flex-col gap-3">
           {user?.role === "admin" && (

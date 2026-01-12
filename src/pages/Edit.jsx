@@ -11,7 +11,7 @@ const Edit = () => {
   const [email, setEmail] = useState("");
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
-
+//get specific user data 
  useEffect(() => {
   axios
     .get(`http://localhost:5000/admin/${id}`)
@@ -21,6 +21,7 @@ const Edit = () => {
       setEmail(res.data.email );
       setContact(res.data.contact );
       setPassword(res.data.Password );
+        
     })
     .catch(() => {
       alert("User not found");
@@ -28,7 +29,7 @@ const Edit = () => {
     });
 }, [id, navigate]);
 
-
+//store updated data in database
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -37,14 +38,14 @@ const Edit = () => {
       name,
       contact,
       email,
-      password,
     });
-
+   alert("user information updated successfully")
    navigate("/desktop");
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 border rounded">
+    <div className="pt-40">
+    <div className="max-w-md mx-auto  mt-10 p-4 border rounded">
       <h2 className="text-xl font-bold mb-4">Edit User</h2>
 
       <form onSubmit={handleUpdate}>
@@ -82,18 +83,11 @@ const Edit = () => {
           placeholder="Contact Number"
         />
 
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border rounded px-3 py-2 mb-2"
-          placeholder="New Password (optional)"
-        />
-
         <button className="w-full bg-blue-600 text-white py-2 rounded">
           Update
         </button>
       </form>
+    </div>
     </div>
   );
 };
