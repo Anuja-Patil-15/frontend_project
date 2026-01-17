@@ -12,22 +12,23 @@ const Edit = () => {
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
 //get specific user data 
- useEffect(() => {
+useEffect(() => {
   axios
-    .get(`http://localhost:5000/admin/${id}`)
+    .get(`http://localhost:5000/admin/${id}`, {
+      withCredentials: true, 
+    })
     .then((res) => {
-      setRole(res.data.Role );
-      setName(res.data.name );
-      setEmail(res.data.email );
-      setContact(res.data.contact );
-      setPassword(res.data.Password );
-        
+      setRole(res.data.Role);
+      setName(res.data.name);
+      setEmail(res.data.email);
+      setContact(res.data.contact);
     })
     .catch(() => {
       alert("User not found");
       navigate("/dashboard");
     });
 }, [id, navigate]);
+
 
 //store updated data in database
   const handleUpdate = async (e) => {
@@ -38,6 +39,8 @@ const Edit = () => {
       name,
       contact,
       email,
+    },{
+      withCredentials:true
     });
    alert("user information updated successfully")
    navigate("/desktop");

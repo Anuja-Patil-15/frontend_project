@@ -19,7 +19,10 @@ const Login = () => {
     try {
       const response = await axios.post(
         `${BACKEND_URL}/user/login`,
-        { email, password }
+        { email, password },
+        {
+          withCredentials:true,
+        }
       );
 
       const user = response.data;

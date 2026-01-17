@@ -47,6 +47,8 @@ const AddUser = () => {
         contact,
         email,
         password,
+      },{
+        withCredentials:true,
       });
       
       

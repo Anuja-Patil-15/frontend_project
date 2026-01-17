@@ -8,18 +8,27 @@ const Deskstop = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 //get all users data
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/admin/display`);
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
+ useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/admin/display`,
+        {
+          withCredentials: true, 
+        }
+      );
+      setUsers(response.data);
+    } catch (error) {
+      console.error(
+        "Error fetching users:",
+        error.response?.data || error.message
+      );
+    }
+  };
 
-    fetchUsers();
-  }, []);
+  fetchUsers();
+}, []);
+
 
  const handleResetPassword = async (id) => {
   try {
@@ -27,7 +36,9 @@ const Deskstop = () => {
 
     await axios.put(
       `${BACKEND_URL}/admin/resetpassword/${id}`,
-      { password }
+      { password },{
+        withCredentials:true,
+      }
     );
     console.log("Reset clicked", id);
 

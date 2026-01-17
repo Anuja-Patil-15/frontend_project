@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { logoutUser } from "../redux/userSlice";
-
+import axios from "axios";
 const Navbar = () => {
   const user = useSelector((state) => state.user.user); 
   const dispatch = useDispatch();
@@ -12,10 +12,20 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
  //if click logout then navigate to /
-  const handleLogout = () => {
-    dispatch(logoutUser()); 
+  const handleLogout = async () => {
+  try {
+    await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
+      {},
+      { withCredentials: true }
+    );
+
+    dispatch(logoutUser());
     navigate("/");
-  };
+  } catch (error) {
+    console.error("Logout failed", error);
+  }
+};
 
   
   useEffect(() => {
@@ -65,7 +75,7 @@ const Navbar = () => {
           </span>
            {/*after droupdown*/}
           {userDropdown && (
-            <div className="absolute right-0 mt-2 bg-white text-black rounded shadow w-40">
+            <div className="absolute right-0 mt-2  bg-white text-black rounded shadow w-40">
               <button
                 onClick={handleLogout}
                 className="px-4 py-2 w-full hover:bg-gray-100 transition"
@@ -89,7 +99,7 @@ const Navbar = () => {
 
      {/*show what display inside menu*/}
       {menuOpen && (
-        <div className="md:hidden mt-2 px-4 pb-4 text-white flex flex-col gap-3">
+        <div className="md:hidden mt-2 px-4 pb-4 bg-gray-500 text-white flex flex-col gap-3">
           {user?.role === "admin" && (
             <>
               <Link
